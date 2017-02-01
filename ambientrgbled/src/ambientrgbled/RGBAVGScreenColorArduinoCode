@@ -1,0 +1,50 @@
+// Output
+int bluPin = 9;   // Red LED,   connected to digital pin 9
+int redPin = 10;  // Green LED, connected to digital pin 10
+int grnPin = 11;  // Blue LED,  connected to digital pin 11
+
+int blueBrightness = 0;
+int greenBrightness = 0;
+int redBrightness = 0;
+boolean setDefaultColor = true;
+int count=0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);   // sets the pins as output
+  pinMode(grnPin, OUTPUT);
+  pinMode(bluPin, OUTPUT);
+
+}
+
+void loop() {
+ if(Serial.available() >= 4) {
+   if(Serial.read() == 0xff) {
+    // 0, 0, 0 is Black
+    // 255, 255, 255 is White but accurate is 254,254,80
+    redBrightness = Serial.read();
+    greenBrightness = Serial.read();
+    blueBrightness = Serial.read();
+   } 
+   setColor(greenBrightness,redBrightness,((blueBrightness)*80)/254);
+   setDefaultColor = false;
+   count = 0;
+  }
+  else{
+    count++;
+  }
+  if(count > 15){
+    count = 0;
+    setDefaultColor = true;
+  }
+  if(setDefaultColor){
+    setColor(254,254,20);
+  }
+  delay(10);
+}
+void setColor(int green, int red, int blue) {
+  analogWrite(grnPin, green);
+  analogWrite(redPin, red);
+  analogWrite(bluPin, blue);
+}
+
