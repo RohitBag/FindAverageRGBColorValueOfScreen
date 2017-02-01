@@ -1,4 +1,4 @@
-package ambientrgbled;
+
 
 import java.awt.AWTException;
 import java.awt.Rectangle;
@@ -18,8 +18,8 @@ import com.fazecast.jSerialComm.SerialPort;
  */
 public class RGBLedController extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private final static int FPS = 10;
-	private final static String DEFAULT_ARDUINO_PORT = "COM1";
+	private final static int FPS = 60;
+	private final static String DEFAULT_ARDUINO_PORT = "COM3";
 
 	public static void main(String[] args) {
 		try {
@@ -45,7 +45,7 @@ public class RGBLedController extends JFrame {
 				System.out.println("Connected to arduino");
 			}
 			else{
-				System.err.println("Problem in connecting to Arduino on selected PortS");
+				System.err.println("Problem in connecting to Arduino on selected Port");
 				Thread.sleep(5000);
 				System.exit(0);
 			}
@@ -75,6 +75,21 @@ public class RGBLedController extends JFrame {
 				green = green / (screenFullImage.getWidth() * screenFullImage.getHeight());
 				blue = blue / (screenFullImage.getWidth() * screenFullImage.getHeight());
 				System.out.println(red + " " + green + " " + blue);
+//				if(red > 100 && red > (blue + green)){
+//					red = 254;
+//					green = 0;
+//					blue = 0;
+//				}
+//				if(blue > 100 && blue > (red + green)){
+//					red = 0;
+//					green = 0;
+//					blue = 254;
+//				}
+//				if(green > 60 && green > (red + blue)){
+//					red = 0;
+//					green = 254;
+//					blue = 0;
+//				}
 
 				// sending the rgb values to arduino
 				output.write(0xff);
